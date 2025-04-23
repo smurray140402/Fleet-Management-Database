@@ -101,66 +101,119 @@ int main() {
 	return 0;
 }
 
+// Function to add new machine to the list. It uses strcmp to sort the list as it adds each element.
 void addNewMachine(Node** head) {
+    // Create new machine newMachine to hold the machine details temporarily
     Machine* newMachine = (Machine*)malloc(sizeof(Machine));
+    if (!newMachine) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
 
-    printf("\nNew Vehicle:");
+    printf("\n--- New Vehicle ---");
 
     // Chassis Number
     printf("\nPlease enter machinery chassis number: ");
     scanf("%s", newMachine->chassisNumber);
 
+    // Check if chassis numbeer is unique
+    Node* current = *head;
+    while (current != NULL) {
+        if (strcmp(current->machine.chassisNumber, newMachine->chassisNumber) == 0) {
+            printf("Error: Chassis number already exists!\n");
+            free(newMachine);
+            return;
+        }
+        current = current->next;
+    }
+
     // Make
-    printf("\nPlease enter machinery make: ");
+    printf("Please enter machinery make: ");
     scanf("%s", newMachine->make);
 
     // Model
-    printf("\nPlease enter machinery model: ");
+    printf("Please enter machinery model: ");
     scanf("%s", newMachine->model);
 
     // Year of Manufacture
-    printf("\nPlease enter machinery year of manufacture: ");
+    printf("Please enter machinery year of manufacture: ");
     scanf("%d", &newMachine->year);
 
     // Cost
-    printf("\nPlease enter machinery cost: ");
+    printf("Please enter machinery cost: ");
     scanf("%f", &newMachine->cost);
 
     // Current Valuation
-    printf("\nPlease enter machinery current valuation: ");
+    printf("Please enter machinery current valuation: ");
     scanf("%f", &newMachine->valuation);
 
     // Current Mileage
-    printf("\nPlease enter machinery current mileage: ");
+    printf("Please enter machinery current mileage: ");
     scanf("%d", &newMachine->mileage);
 
     // Next Service Mileage
-    printf("\nPlease enter machinery next service mileage: ");
+    printf("Please enter machinery next service mileage: ");
     scanf("%d", &newMachine->nextServiceMileage);
 
     // Owner Name
-    printf("\nPlease enter machinery owner name: ");
+    printf("Please enter machinery owner name: ");
     scanf("%s", newMachine->ownerName);
 
     // Owner Email
-    printf("\nPlease enter machinery owner email: ");
+    printf("Please enter machinery owner email: ");
     scanf("%s", newMachine->ownerEmail);
 
     // Owner Number
-    printf("\nPlease enter machinery owner number: ");
+    printf("Please enter machinery owner number: ");
     scanf("%s", newMachine->ownerPhone);
 
     // Type
-    printf("\nPlease enter machinery type (0: Tractor, 1: Excavator, 2: Roller, 3: Crane, 4: Mixer): ");
+    printf("Please enter machinery type (0: Tractor, 1: Excavator, 2: Roller, 3: Crane, 4: Mixer): ");
     int typeInput;
     scanf("%d", &typeInput);
     newMachine->type = (MachineType)typeInput;
 
     // Breakdowns
-    printf("\nPlease enter breakdown frequency (0: Never, 1: <3 times, 2: <5 times, 3: >5 times): ");
+    printf("Please enter breakdown frequency (0: Never, 1: <3 times, 2: <5 times, 3: >5 times): ");
     int breakdownInput;
     scanf("%d", &breakdownInput);
     newMachine->breakdowns = (BreakdownCategory)breakdownInput;
+
+    // Create new node to store the machine
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Memory allocation failed for the new node!\n");
+        free(newMachine);
+        return;
+    }
+
+    // Set the machine details in the new node
+    newNode->machine = *newMachine;
+    newNode->next = NULL;
+
+    // If list is empty or chassis number is smaller than the first node chassis number insert at the head
+    if (*head == NULL || strcmp((*head)->machine.chassisNumber, newMachine->chassisNumber) > 0) {
+        newNode->next = *head;
+        *head = newNode;
+    } else {
+        // Create temp node which holds the previous node
+        Node* temp = NULL;
+        current = *head;
+
+        // Traverse to find the correct position for the new node
+        while (current != NULL && strcmp(current->machine.chassisNumber, newMachine->chassisNumber) < 0) {
+            temp = current;
+            current = current->next;
+        }
+        // Insert the new node
+        temp->next = newNode;
+        newNode->next = current;
+    }
+
+    printf("\nNew machine added successfully!\n");
+
+    // Free memory for the temporary machine object
+    free(newMachine);
 
 }
 

@@ -40,11 +40,21 @@ typedef struct {
     BreakdownCategory breakdowns;
 } Machine;
 
+// Structure for the linked list. 
+// Each node holds one Machine and a pointer to the next node.
+typedef struct {
+    Machine machine;
+    struct Node* next;
+}Node;
+
 int menu();
+void addNewMachine();
 
 int main() {
 
+    // Variables
     int menuOption;
+    Node* head = NULL;
 
 	printf("*****************************************");
 	printf("\n*                                       *");
@@ -59,7 +69,7 @@ int main() {
         // Switch to handle the users menu choice
         switch (menuOption) {
         case 1:
-            printf("case1");
+            addNewMachine(&head);
             break;
         case 2:
             printf("case2");
@@ -91,8 +101,14 @@ int main() {
 	return 0;
 }
 
+void addNewMachine(Node** head) {
+    
+}
+
 // Function for menu which returns the users choice
 int menu() {
+
+    // Variables
     int option;
 
     printf("\n---------------------------");

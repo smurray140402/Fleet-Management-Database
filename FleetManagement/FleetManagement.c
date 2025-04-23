@@ -102,7 +102,66 @@ int main() {
 }
 
 void addNewMachine(Node** head) {
-    
+    Machine* newMachine = (Machine*)malloc(sizeof(Machine));
+
+    printf("\nNew Vehicle:");
+
+    // Chassis Number
+    printf("\nPlease enter machinery chassis number: ");
+    scanf("%s", newMachine->chassisNumber);
+
+    // Make
+    printf("\nPlease enter machinery make: ");
+    scanf("%s", newMachine->make);
+
+    // Model
+    printf("\nPlease enter machinery model: ");
+    scanf("%s", newMachine->model);
+
+    // Year of Manufacture
+    printf("\nPlease enter machinery year of manufacture: ");
+    scanf("%d", &newMachine->year);
+
+    // Cost
+    printf("\nPlease enter machinery cost: ");
+    scanf("%f", &newMachine->cost);
+
+    // Current Valuation
+    printf("\nPlease enter machinery current valuation: ");
+    scanf("%f", &newMachine->valuation);
+
+    // Current Mileage
+    printf("\nPlease enter machinery current mileage: ");
+    scanf("%d", &newMachine->mileage);
+
+    // Next Service Mileage
+    printf("\nPlease enter machinery next service mileage: ");
+    scanf("%d", &newMachine->nextServiceMileage);
+
+    // Owner Name
+    printf("\nPlease enter machinery owner name: ");
+    scanf("%s", newMachine->ownerName);
+
+    // Owner Email
+    printf("\nPlease enter machinery owner email: ");
+    scanf("%s", newMachine->ownerEmail);
+
+    // Owner Number
+    printf("\nPlease enter machinery owner number: ");
+    scanf("%s", newMachine->ownerPhone);
+
+    // Type
+    printf("\nPlease enter machinery type (0: Tractor, 1: Excavator, 2: Roller, 3: Crane, 4: Mixer): ");
+    int typeInput;
+    scanf("%d", &typeInput);
+    newMachine->type = (MachineType)typeInput;
+
+    // Breakdowns
+    printf("\nPlease enter breakdown frequency (0: Never, 1: <3 times, 2: <5 times, 3: >5 times): ");
+    int breakdownInput;
+    scanf("%d", &breakdownInput);
+    newMachine->breakdowns = (BreakdownCategory)breakdownInput;
+
 }
 
 // Function for menu which returns the users choice

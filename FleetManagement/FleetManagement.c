@@ -47,9 +47,12 @@ typedef struct {
     struct Node* next;
 }Node;
 
+
+// Function prototypes
 int menu();
 void addNewMachine(Node** head);
 void displayAllMachines(Node* head);
+void displayMachineDetails(Node* head);
 
 
 int main() {
@@ -77,7 +80,7 @@ int main() {
             displayAllMachines(head);
             break;
         case 3:
-            printf("case3");
+            displayMachineDetails(head);
             break;
         case 4:
             printf("case4");
@@ -295,6 +298,93 @@ void displayAllMachines(Node* head) {
 
         temp = temp->next;
     }
+}
+
+// Function to display a machines details
+void displayMachineDetails(Node* head) {
+
+    Node* temp;
+    temp = head;
+
+    if (temp == NULL) {
+        printf("\nError...No machines in the list...returning\n");
+        return;
+    }
+
+    char chassisSearch[tempValue];
+    printf("\nPlease enter machine chassis number you wish to search...");
+    scanf("%s", chassisSearch);
+
+    while (temp != NULL) {
+       
+
+        // I would like to make the output of the machine details into a seperate function as a lot of this code is duplicated 
+        // in displayAllMachines above. But since I dont want machine chassis to be printed again I will leave it for now
+        if (strcmp(temp->machine.chassisNumber,chassisSearch) == 0) {
+            printf("\n--- Details for machine chassis #%d ---\n", temp->machine.chassisNumber);
+            printf("\nMake: %s", temp->machine.make);
+            printf("\nModel: %s", temp->machine.model);
+            printf("\nYear: %d", temp->machine.year);
+            printf("\nCost: %.2f", temp->machine.cost);
+            printf("\nCurrent Valuation: %.2f", temp->machine.valuation);
+            printf("\nMileage: %d", temp->machine.mileage);
+            printf("\nNext Service Mileage: %d", temp->machine.nextServiceMileage);
+            printf("\nOwner Name: %s", temp->machine.ownerName);
+            printf("\nOwner Email: %s", temp->machine.ownerEmail);
+            printf("\nOwner Phone: %s", temp->machine.ownerPhone);
+
+            // Print Machine Type
+            printf("\nMachine Type: ");
+            switch (temp->machine.type) {
+            case TRACTOR:
+                printf("Tractor");
+                break;
+            case EXCAVATOR:
+                printf("Excavator");
+                break;
+            case ROLLER:
+                printf("Roller");
+                break;
+            case CRANE:
+                printf("Crane");
+                break;
+            case MIXER:
+                printf("Mixer");
+                break;
+            default:
+                printf("Unknown");
+                break;
+            }
+
+            // Print Breakdown Category
+            printf("\nBreakdown Frequency: ");
+            switch (temp->machine.breakdowns) {
+            case NEVER:
+                printf("Never");
+                break;
+            case LESS_THAN_THREE:
+                printf("Less than 3 times");
+                break;
+            case LESS_THAN_FIVE:
+                printf("Less than 5 times");
+                break;
+            case MORE_THAN_FIVE:
+                printf("More than 5 times");
+                break;
+            default:
+                printf("Unknown");
+                break;
+            }
+
+            printf("\n---------------------------\n");
+
+            return;
+        }
+
+        temp = temp->next;
+    }
+
+    printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
 }
 
 // Function for menu which returns the users choice

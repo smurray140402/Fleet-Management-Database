@@ -48,7 +48,9 @@ typedef struct {
 }Node;
 
 int menu();
-void addNewMachine();
+void addNewMachine(Node** head);
+void displayAllMachines(Node* head);
+
 
 int main() {
 
@@ -72,7 +74,7 @@ int main() {
             addNewMachine(&head);
             break;
         case 2:
-            printf("case2");
+            displayAllMachines(head);
             break;
         case 3:
             printf("case3");
@@ -217,6 +219,84 @@ void addNewMachine(Node** head) {
 
 }
 
+// Function to display all machines in the list.
+void displayAllMachines(Node* head) {
+
+    Node* temp;
+    temp = head;
+    int counter = 0;
+
+    if (temp == NULL) {
+        printf("\nNo vechicles to display\n");
+        return;
+    }
+
+    printf("\n--- List of All Machines ---\n");
+
+    while (temp != NULL) {
+        counter++;
+        printf("\nMachine #%d:", counter);
+        printf("\nChassis Number: %s", temp->machine.chassisNumber);
+        printf("\nMake: %s", temp->machine.make);
+        printf("\nModel: %s", temp->machine.model);
+        printf("\nYear: %d", temp->machine.year);
+        printf("\nCost: %.2f", temp->machine.cost);
+        printf("\nCurrent Valuation: %.2f", temp->machine.valuation);
+        printf("\nMileage: %d", temp->machine.mileage);
+        printf("\nNext Service Mileage: %d", temp->machine.nextServiceMileage);
+        printf("\nOwner Name: %s", temp->machine.ownerName);
+        printf("\nOwner Email: %s", temp->machine.ownerEmail);
+        printf("\nOwner Phone: %s", temp->machine.ownerPhone);
+
+        // Print Machine Type
+        printf("\nMachine Type: ");
+        switch (temp->machine.type) {
+            case TRACTOR: 
+                printf("Tractor"); 
+                break;
+            case EXCAVATOR: 
+                printf("Excavator"); 
+                break;
+            case ROLLER: 
+                printf("Roller"); 
+                break;
+            case CRANE: 
+                printf("Crane"); 
+                break;
+            case MIXER: 
+                printf("Mixer"); 
+                break;
+            default: 
+                printf("Unknown"); 
+                break;
+        }
+
+        // Print Breakdown Category
+        printf("\nBreakdown Frequency: ");
+        switch (temp->machine.breakdowns) {
+            case NEVER: 
+                printf("Never"); 
+                break;
+            case LESS_THAN_THREE: 
+                printf("Less than 3 times"); 
+                break;
+            case LESS_THAN_FIVE: 
+                printf("Less than 5 times"); 
+                break;
+            case MORE_THAN_FIVE: 
+                printf("More than 5 times"); 
+                break;
+            default: 
+                printf("Unknown"); 
+                break;
+        }
+
+        printf("\n---------------------------\n");
+
+        temp = temp->next;
+    }
+}
+
 // Function for menu which returns the users choice
 int menu() {
 
@@ -241,7 +321,7 @@ int menu() {
     printf("\n(8) CURRENT VALUATION LIST");
     printf("\n---------------------------");
     printf("\n(0) EXIT");
-    printf("\n---------------------------\n\n");
+    printf("\n---------------------------\nYour choice....");
 
     scanf("%d", &option);
 

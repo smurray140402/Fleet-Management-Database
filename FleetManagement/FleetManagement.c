@@ -53,6 +53,7 @@ int menu();
 void addNewMachine(Node** head);
 void displayAllMachines(Node* head);
 void displayMachineDetails(Node* head);
+void updateMachine(Node* head);
 
 
 int main() {
@@ -83,7 +84,7 @@ int main() {
             displayMachineDetails(head);
             break;
         case 4:
-            printf("case4");
+            updateMachine(head);
             break;
         case 5:
             printf("case5");
@@ -312,16 +313,15 @@ void displayMachineDetails(Node* head) {
     }
 
     char chassisSearch[tempValue];
-    printf("\nPlease enter machine chassis number you wish to search...");
+    printf("\nPlease enter machine chassis number you wish to search: ");
     scanf("%s", chassisSearch);
 
     while (temp != NULL) {
        
-
         // I would like to make the output of the machine details into a seperate function as a lot of this code is duplicated 
         // in displayAllMachines above. But since I dont want machine chassis to be printed again I will leave it for now
         if (strcmp(temp->machine.chassisNumber,chassisSearch) == 0) {
-            printf("\n--- Details for machine chassis #%d ---\n", temp->machine.chassisNumber);
+            printf("\n--- Details for machine chassis #%s ---\n", temp->machine.chassisNumber);
             printf("\nMake: %s", temp->machine.make);
             printf("\nModel: %s", temp->machine.model);
             printf("\nYear: %d", temp->machine.year);
@@ -383,7 +383,68 @@ void displayMachineDetails(Node* head) {
 
         temp = temp->next;
     }
+    printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
+}
 
+// Function that allows user to update machine details
+void updateMachine(Node* head)
+{
+    Node* temp;
+    temp = head;
+
+    if (temp == NULL) {
+        printf("\nError...No machines in the list...returning\n");
+        return;
+    }
+
+    char chassisSearch[tempValue];
+    printf("\nPlease enter machine chassis number you wish to update: ");
+    scanf("%s", chassisSearch);
+
+    while (temp != NULL) {
+
+        // If a chassis number matches the user input it allows the user to update Current Valuation, Current Mileage, Next Service Mileage and Current Breakdowns
+        if (strcmp(temp->machine.chassisNumber, chassisSearch) == 0) {
+            printf("\n--- Update details for machine chassis #%s ---\n", temp->machine.chassisNumber);
+
+            printf("\nCurrent Valuation: %.2f \nNew Valuation: ", temp->machine.valuation);
+            scanf("%f", &temp->machine.valuation);
+            printf("\nCurrent Mileage: %d \nNew Mileage: ", temp->machine.mileage);
+            scanf("%d", &temp->machine.mileage);
+            printf("\nNext Service Mileage: %d \nNew Service Mileage: ", temp->machine.nextServiceMileage);
+            scanf("%d", &temp->machine.nextServiceMileage);
+
+            printf("\nCurrent Breakdown Frequency: ");
+            switch (temp->machine.breakdowns) {
+            case NEVER:
+                printf("Never");
+                break;
+            case LESS_THAN_THREE:
+                printf("Less than 3 times");
+                break;
+            case LESS_THAN_FIVE:
+                printf("Less than 5 times");
+                break;
+            case MORE_THAN_FIVE:
+                printf("More than 5 times");
+                break;
+            default:
+                printf("Unknown");
+                break;
+            }
+
+            printf("\nEnter New Breakdown Frequency (0: Never, 1: <3 times, 2: <5 times, 3: >5 times): ");
+            int breakdownInput;
+            scanf("%d", &breakdownInput);
+            temp->machine.breakdowns = (BreakdownCategory)breakdownInput;
+
+            printf("\n---------------------------\n");
+
+            return;
+        }
+
+        temp = temp->next;
+    }
     printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
 }
 

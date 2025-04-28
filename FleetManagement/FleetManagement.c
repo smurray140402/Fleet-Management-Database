@@ -42,7 +42,7 @@ typedef struct {
 
 // Structure for the linked list. 
 // Each node holds one Machine and a pointer to the next node.
-typedef struct {
+typedef struct Node{
     Machine machine;
     struct Node* next;
 }Node;
@@ -54,6 +54,7 @@ void addNewMachine(Node** head);
 void displayAllMachines(Node* head);
 void displayMachineDetails(Node* head);
 void updateMachine(Node* head);
+void deleteMachine(Node** head);
 
 
 int main() {
@@ -87,7 +88,7 @@ int main() {
             updateMachine(head);
             break;
         case 5:
-            printf("case5");
+            deleteMachine(&head);
             break;
         case 6:
             printf("case6");
@@ -447,6 +448,45 @@ void updateMachine(Node* head)
     }
     printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
 }
+
+// Function that allows user to delete a machine
+void deleteMachine(Node** head)
+{
+    Node* temp = *head;
+    Node* prev = NULL;
+
+    if (temp == NULL) {
+        printf("\nError...No machines in the list...returning\n");
+        return;
+    }
+
+    char chassisSearch[tempValue];
+    printf("\nPlease enter machine chassis number you wish to delete: ");
+    scanf("%s", chassisSearch);
+
+    while (temp != NULL) {
+
+        if (strcmp(temp->machine.chassisNumber, chassisSearch) == 0) {
+            
+            // If the node to delete is the first one
+            if (prev == NULL) {
+                *head = temp->next;
+            }
+            else {
+                prev->next = temp->next;
+            }
+
+            free(temp);
+            printf("\n--- Machine with chassis number %s deleted successfully! ---\n", chassisSearch);
+            return;
+        }
+
+        prev = temp;
+        temp = temp->next;
+    }
+    printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
+}
+
 
 // Function for menu which returns the users choice
 int menu() {

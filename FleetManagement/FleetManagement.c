@@ -42,7 +42,7 @@ typedef struct {
 
 // Structure for the linked list. 
 // Each node holds one Machine and a pointer to the next node.
-typedef struct Node{
+typedef struct {
     Machine machine;
     struct Node* next;
 }Node;
@@ -55,6 +55,7 @@ void displayAllMachines(Node* head);
 void displayMachineDetails(Node* head);
 void updateMachine(Node* head);
 void deleteMachine(Node** head);
+void generateStatistics(Node* head);
 
 
 int main() {
@@ -91,7 +92,7 @@ int main() {
             deleteMachine(&head);
             break;
         case 6:
-            printf("case6");
+            generateStatistics(head);
             break;
         case 7:
             printf("case7");
@@ -487,6 +488,42 @@ void deleteMachine(Node** head)
     printf("\n--- Machine Chassis #%s does not exist in the database ---\n", chassisSearch);
 }
 
+// Function for generating statistics
+void generateStatistics(Node* head) {
+
+    // Counters for total machines per type and breakdown categories
+    int totals[5] = {0};
+    int breakdowns[5][4] = {{0}};
+
+    Node* temp = head;
+    while (temp != NULL) {
+        int type = temp->machine.type;
+        totals[type]++;
+
+        // Breakdown categories
+        if (temp->machine.breakdowns == NEVER) breakdowns[type][0]++;
+        else if (temp->machine.breakdowns == LESS_THAN_THREE) breakdowns[type][1]++;
+        else if (temp->machine.breakdowns == LESS_THAN_FIVE) breakdowns[type][2]++;
+        else if (temp->machine.breakdowns == MORE_THAN_FIVE) breakdowns[type][3]++;
+
+        temp = temp->next;
+    }
+
+    // Print the stats for each machine type
+    const char* machineTypes[] = { "Tractor", "Excavator", "Roller", "Crane", "Mixer" };
+    for (int i = 0; i < 5; i++) {
+        if (totals[i] == 0) {
+            printf("\n--- No Breakdown Stats for %ss---\n", machineTypes[i]);
+            continue;
+        }
+
+        printf("\n--- %s Breakdown Stats ---\n", machineTypes[i]);
+        printf("A. %% with no breakdowns (NEVER): %.2f%%\n", (float)breakdowns[i][0] / totals[i] * 100);
+        printf("B. %% with fewer than 3 breakdowns: %.2f%%\n", (float)breakdowns[i][1] / totals[i] * 100);
+        printf("C. %% with fewer than 5 breakdowns: %.2f%%\n", (float)breakdowns[i][2] / totals[i] * 100);
+        printf("D. %% with more than 5 breakdowns: %.2f%%\n", (float)breakdowns[i][3] / totals[i] * 100);
+    }
+}
 
 // Function for menu which returns the users choice
 int menu() {

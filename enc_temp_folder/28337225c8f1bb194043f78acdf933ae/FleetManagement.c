@@ -527,7 +527,6 @@ void generateStatistics(Node* head) {
 }
 
 // Function to generate report file
-// I understand I am duplicating code here. Might change it around at a later date
 void outputReportFile(Node* head) {
 
     // Counters for total machines per type and breakdown categories
@@ -538,7 +537,6 @@ void outputReportFile(Node* head) {
     temp = head;
     int counter = 0;
 
-    // Open report file that I will write to
     FILE* report = fopen("reportFile.txt", "w");
 
     if (temp == NULL) {

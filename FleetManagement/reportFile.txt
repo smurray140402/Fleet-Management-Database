@@ -1,0 +1,32 @@
+
+--- List of All Machines ---
+
+Machine #1:
+Chassis Number: 1
+Make: 1
+Model: 1
+Year: 1
+Cost: 1.00
+Current Valuation: 1.00
+Mileage: 1
+Next Service Mileage: 1
+Owner Name: 1
+Owner Email: 1
+Owner Phone: 1
+Machine Type: Excavator
+Breakdown Frequency: Less than 3 times
+---------------------------
+
+--- No Breakdown Stats for Tractors---
+
+--- Excavator Breakdown Stats ---
+A. % with no breakdowns (NEVER): 0.00%
+B. % with fewer than 3 breakdowns: 100.00%
+C. % with fewer than 5 breakdowns: 0.00%
+D. % with more than 5 breakdowns: 0.00%
+
+--- No Breakdown Stats for Rollers---
+
+--- No Breakdown Stats for Cranes---
+
+--- No Breakdown Stats for Mixers---

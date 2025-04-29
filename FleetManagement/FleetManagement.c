@@ -57,6 +57,7 @@ void updateMachine(Node* head);
 void deleteMachine(Node** head);
 void generateStatistics(Node* head);
 void outputReportFile(Node* head);
+void listMachinesValuationDesc(Node* head);
 
 
 int main() {
@@ -99,7 +100,7 @@ int main() {
             outputReportFile(head);
             break;
         case 8:
-            printf("case8");
+            listMachinesValuationDesc(head);
             break;
         default:
             break;
@@ -637,6 +638,104 @@ void outputReportFile(Node* head) {
     }
     fclose(report);
     printf("\n--- Report successfully written to reportFile.txt ---\n");
+}
+
+// Function to list all the machinery in order of current valuation
+void listMachinesValuationDesc(Node* head) {
+
+    Node* current;
+    current = head;
+
+    if (current == NULL) {
+        printf("\nNo vehicles to display\n");
+        return;
+    }
+
+    Node* nextNode;
+    Machine tempMachine;
+
+    // Bubble Sort to sort machines by valuation in descending order
+    // https://www.geeksforgeeks.org/bubble-sort-algorithm/
+    // https://www.programiz.com/dsa/bubble-sort
+    for (current = head; current != NULL; current = current->next) {
+        for (nextNode = current->next; nextNode != NULL; nextNode = nextNode->next) {
+            if (current->machine.valuation < nextNode->machine.valuation) {
+                // Swap the machine data is current valuation is less than the next
+                tempMachine = current->machine;
+                current->machine = nextNode->machine;
+                nextNode->machine = tempMachine;
+            }
+        }
+    }
+
+    // Display sorted machines by valuation
+    Node* temp = head;
+    int counter = 0;
+
+    printf("\n--- Machines Sorted by Valuation (Descending) ---\n");
+
+    while (temp != NULL) {
+        counter++;
+        printf("\nMachine #%d:", counter);
+        printf("\nChassis Number: %s", temp->machine.chassisNumber);
+        printf("\nMake: %s", temp->machine.make);
+        printf("\nModel: %s", temp->machine.model);
+        printf("\nYear: %d", temp->machine.year);
+        printf("\nCost: %.2f", temp->machine.cost);
+        printf("\nCurrent Valuation: %.2f", temp->machine.valuation);
+        printf("\nMileage: %d", temp->machine.mileage);
+        printf("\nNext Service Mileage: %d", temp->machine.nextServiceMileage);
+        printf("\nOwner Name: %s", temp->machine.ownerName);
+        printf("\nOwner Email: %s", temp->machine.ownerEmail);
+        printf("\nOwner Phone: %s", temp->machine.ownerPhone);
+
+        // Print Machine Type
+        printf("\nMachine Type: ");
+        switch (temp->machine.type) {
+        case TRACTOR:
+            printf("Tractor");
+            break;
+        case EXCAVATOR:
+            printf("Excavator");
+            break;
+        case ROLLER:
+            printf("Roller");
+            break;
+        case CRANE:
+            printf("Crane");
+            break;
+        case MIXER:
+            printf("Mixer");
+            break;
+        default:
+            printf("Unknown");
+            break;
+        }
+
+        // Print Breakdown Category
+        printf("\nBreakdown Frequency: ");
+        switch (temp->machine.breakdowns) {
+        case NEVER:
+            printf("Never");
+            break;
+        case LESS_THAN_THREE:
+            printf("Less than 3 times");
+            break;
+        case LESS_THAN_FIVE:
+            printf("Less than 5 times");
+            break;
+        case MORE_THAN_FIVE:
+            printf("More than 5 times");
+            break;
+        default:
+            printf("Unknown");
+            break;
+        }
+
+        printf("\n---------------------------\n");
+
+        temp = temp->next;
+    }
 }
 
 // Function for menu which returns the users choice

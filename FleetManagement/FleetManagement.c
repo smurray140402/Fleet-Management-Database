@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <conio.h>
 
 #define tempValue 30
 
@@ -71,15 +72,17 @@ int main() {
     // Check login credentials before allowing access to the main program
     // Exits program if the login fails
     if (!login()) {
-        printf("Invalid credentials. Exiting the program.\n");
+        printf("\n\nInvalid credentials. Exiting the program.\n");
         return 0;
     }
+
+    printf("\n\nLogin Successful\n");
 
     // Variables
     int menuOption;
     Node* head = NULL;
 
-	printf("*****************************************");
+	printf("\n*****************************************");
 	printf("\n*                                       *");
 	printf("\n*\tFleet Management Database\t*");
 	printf("\n*                                       *");
@@ -138,6 +141,8 @@ bool login() {
     char inputUsername[tempValue];
     char inputPassword[tempValue];
     int userCount = 0;
+    char ch;
+    int i;
 
     // Read the login file and store credentials
     while (!feof(loginFile)) {
@@ -151,7 +156,23 @@ bool login() {
     printf("Enter username: ");
     scanf("%s", inputUsername);
     printf("Enter password: ");
-    scanf("%s", inputPassword);
+
+    // For loop to get the user password inputbut change the values to '*' for security
+    // https://c-program-example.com/2011/09/c-program-to-mask-password-text-with-asterisk.html#:~:text=C%20Program%20to%20mask%20password%20text%20with%20asterisk(*),-C%20Program%20to&text=This%20program%20is%20to%20illustrate,is%20replaced%20by%20'*'.
+    for (i = 0; i < tempValue; i++)
+    {
+        ch = _getch();
+
+        if (ch == '\r') {
+            break;
+        }
+        inputPassword[i] = ch;
+        ch = '*';
+        printf("%c", ch);
+        
+    }
+    inputPassword[i] = '\0';
+
 
     // Check if the entered credentials match any in the file
     for (int i = 0; i < userCount; i++) {

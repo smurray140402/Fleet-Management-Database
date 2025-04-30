@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <conio.h>
 
-#define tempValue 30
+#define MACHINE_DETAILS 30
+#define OWNER_DETAILS 40
+#define PHONE 10
 #define USERNAME_AND_PASSWORD 7
 
 // Enum that represents the different machine types
@@ -27,17 +29,17 @@ typedef enum {
 
 // Structure to hold all machine details
 typedef struct {
-    char chassisNumber[tempValue];
-    char make[tempValue];
-    char model[tempValue];
+    char chassisNumber[MACHINE_DETAILS];
+    char make[MACHINE_DETAILS];
+    char model[MACHINE_DETAILS];
     int year;
     float cost;
     float valuation;
     int mileage;
     int nextServiceMileage;
-    char ownerName[tempValue];
-    char ownerEmail[tempValue];
-    char ownerPhone[tempValue];
+    char ownerName[OWNER_DETAILS];
+    char ownerEmail[OWNER_DETAILS];
+    char ownerPhone[PHONE];
     MachineType type;
     BreakdownCategory breakdowns;
 } Machine;
@@ -51,8 +53,8 @@ typedef struct {
 
 // Structure that holds the username and password
 typedef struct {
-    char username[tempValue];
-    char password[tempValue];
+    char username[USERNAME_AND_PASSWORD];
+    char password[USERNAME_AND_PASSWORD];
 } User;
 
 
@@ -481,7 +483,7 @@ void displayMachineDetails(Node* head) {
         return;
     }
 
-    char chassisSearch[tempValue];
+    char chassisSearch[MACHINE_DETAILS];
     printf("\nPlease enter machine chassis number you wish to search: ");
     scanf("%s", chassisSearch);
 
@@ -566,7 +568,7 @@ void updateMachine(Node* head)
         return;
     }
 
-    char chassisSearch[tempValue];
+    char chassisSearch[MACHINE_DETAILS];
     printf("\nPlease enter machine chassis number you wish to update: ");
     scanf("%s", chassisSearch);
 
@@ -628,7 +630,7 @@ void deleteMachine(Node** head)
         return;
     }
 
-    char chassisSearch[tempValue];
+    char chassisSearch[MACHINE_DETAILS];
     printf("\nPlease enter machine chassis number you wish to delete: ");
     scanf("%s", chassisSearch);
 

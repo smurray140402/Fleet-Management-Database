@@ -820,6 +820,8 @@ int menu() {
 
     scanf("%d", &option);
 
+    system("cls");
+
     return option;
 }
 

@@ -67,6 +67,7 @@ void outputReportFile(Node* head);
 void listMachinesValuationDesc(Node* head);
 bool login();
 void loadMachines(Node** head);
+void saveMachinesToFile(Node* head);
 
 int main() {
 
@@ -127,6 +128,8 @@ int main() {
         }
     } while (menuOption != 0);
 
+    saveMachinesToFile(head);
+
 	return 0;
 }
 
@@ -155,9 +158,48 @@ void loadMachines(Node** head) {
             }
 
             newNode->machine = tempMachine;
-            newNode->next = *head;
-            *head = newNode;
+            
+            // If the list is empty or chassis number is smaller than the first node chassis number insert at the head
+            if (*head == NULL || strcmp((*head)->machine.chassisNumber, newNode->machine.chassisNumber) > 0) {
+                newNode->next = *head;
+                *head = newNode;
+            }
+            else {
+                // Create temp node which holds the previous node
+                Node* current = *head;
+                Node* temp = NULL;
+
+                // Traverse to find the correct position for the new node
+                while (current != NULL && strcmp(current->machine.chassisNumber, newNode->machine.chassisNumber) < 0) {
+                    temp = current;
+                    current = current->next;
+                }
+
+                // Insert the new node
+                temp->next = newNode;
+                newNode->next = current;
+            }
         }
+    }
+
+    fclose(file);
+}
+
+// Save machines to fleet.txt file
+void saveMachinesToFile(Node* head) {
+    FILE* file = fopen("fleet.txt", "w");
+    if (file == NULL) {
+        printf("Error opening file for saving.\n");
+        return;
+    }
+
+    Node* current = head;
+    while (current != NULL) {
+        fprintf(file, "%s %s %s %d %.2f %.2f %d %d %s %s %s %d %d\n", current->machine.chassisNumber, current->machine.make, current->machine.model,
+            current->machine.year, current->machine.cost, current->machine.valuation, current->machine.mileage, current->machine.nextServiceMileage,
+            current->machine.ownerName, current->machine.ownerEmail, current->machine.ownerPhone, current->machine.type, current->machine.breakdowns);
+
+        current = current->next;
     }
 
     fclose(file);

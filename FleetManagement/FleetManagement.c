@@ -66,6 +66,7 @@ void generateStatistics(Node* head);
 void outputReportFile(Node* head);
 void listMachinesValuationDesc(Node* head);
 bool login();
+void loadMachines(Node** head);
 
 int main() {
 
@@ -81,6 +82,8 @@ int main() {
     // Variables
     int menuOption;
     Node* head = NULL;
+
+    loadMachines(&head);
 
 	printf("\n*****************************************");
 	printf("\n*                                       *");
@@ -125,6 +128,39 @@ int main() {
     } while (menuOption != 0);
 
 	return 0;
+}
+
+// Load machines from fleet.txt file
+void loadMachines(Node** head) {
+    FILE* file = fopen("fleet.txt", "r");
+    if (file == NULL) {
+        printf("No existing fleet file found, starting from scratch...\n");
+        return;
+    }
+
+    // Create temporary machine
+    Machine tempMachine;
+
+    while (!feof(file)) {
+        if (fscanf(file, "%s %s %s %d %f %f %d %d %s %s %s %d %d\n", tempMachine.chassisNumber, tempMachine.make, tempMachine.model, &tempMachine.year, &tempMachine.cost,
+            &tempMachine.valuation, &tempMachine.mileage, &tempMachine.nextServiceMileage, tempMachine.ownerName, tempMachine.ownerEmail, tempMachine.ownerPhone,
+            (int*)&tempMachine.type, (int*)&tempMachine.breakdowns) == 13) {
+
+            // Create a new node for the machine
+            Node* newNode = (Node*)malloc(sizeof(Node));
+            if (!newNode) {
+                printf("Memory allocation failed!\n");
+                fclose(file);
+                return;
+            }
+
+            newNode->machine = tempMachine;
+            newNode->next = *head;
+            *head = newNode;
+        }
+    }
+
+    fclose(file);
 }
 
 // Function to check login credentials

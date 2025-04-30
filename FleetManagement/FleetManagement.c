@@ -47,6 +47,12 @@ typedef struct {
     struct Node* next;
 }Node;
 
+// Structure that holds the username and password
+typedef struct {
+    char username[tempValue];
+    char password[tempValue];
+} User;
+
 
 // Function prototypes
 int menu();
@@ -58,9 +64,16 @@ void deleteMachine(Node** head);
 void generateStatistics(Node* head);
 void outputReportFile(Node* head);
 void listMachinesValuationDesc(Node* head);
-
+bool login();
 
 int main() {
+
+    // Check login credentials before allowing access to the main program
+    // Exits program if the login fails
+    if (!login()) {
+        printf("Invalid credentials. Exiting the program.\n");
+        return 0;
+    }
 
     // Variables
     int menuOption;
@@ -109,6 +122,47 @@ int main() {
     } while (menuOption != 0);
 
 	return 0;
+}
+
+// Function to check login credentials
+bool login() {
+
+    FILE* loginFile = fopen("login.txt", "r");
+    if (loginFile == NULL) {
+        printf("Error: Unable to open login file.\n");
+        return false;
+    }
+
+    // Variables
+    User users[3];
+    char inputUsername[tempValue];
+    char inputPassword[tempValue];
+    int userCount = 0;
+
+    // Read the login file and store credentials
+    while (!feof(loginFile)) {
+        fscanf(loginFile, "%s %s", users[userCount].username, users[userCount].password);
+        userCount++;
+    }
+
+    fclose(loginFile);
+
+    // Ask for username and password
+    printf("Enter username: ");
+    scanf("%s", inputUsername);
+    printf("Enter password: ");
+    scanf("%s", inputPassword);
+
+    // Check if the entered credentials match any in the file
+    for (int i = 0; i < userCount; i++) {
+        // Valid credentials
+        if (strcmp(inputUsername, users[i].username) == 0 && strcmp(inputPassword, users[i].password) == 0) {
+            return true;
+        }
+    }
+
+    // Invalid credentials
+    return false;
 }
 
 // Function to add new machine to the list. It uses strcmp to sort the list as it adds each element.

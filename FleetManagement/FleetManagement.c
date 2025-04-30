@@ -6,6 +6,7 @@
 #include <conio.h>
 
 #define tempValue 30
+#define USERNAME_AND_PASSWORD 7
 
 // Enum that represents the different machine types
 typedef enum { 
@@ -216,14 +217,14 @@ bool login() {
 
     // Variables
     User users[3];
-    char inputUsername[tempValue];
-    char inputPassword[tempValue];
+    char inputUsername[USERNAME_AND_PASSWORD];
+    char inputPassword[USERNAME_AND_PASSWORD];
     int userCount = 0;
     char ch;
     int i;
 
-    // Read the login file and store credentials
-    while (!feof(loginFile)) {
+    // Read the login file and store credentials (6 characters for each)
+    while (!feof(loginFile) && userCount < 3) {
         fscanf(loginFile, "%s %s", users[userCount].username, users[userCount].password);
         userCount++;
     }
@@ -231,13 +232,13 @@ bool login() {
     fclose(loginFile);
 
     // Ask for username and password
-    printf("Enter username: ");
-    scanf("%s", inputUsername);
-    printf("Enter password: ");
+    printf("Enter username (MAX 6 characters): ");
+    scanf("%6s", inputUsername);
+    printf("Enter password (MAX 6 characters): ");
 
     // For loop to get the user password inputbut change the values to '*' for security
     // https://c-program-example.com/2011/09/c-program-to-mask-password-text-with-asterisk.html#:~:text=C%20Program%20to%20mask%20password%20text%20with%20asterisk(*),-C%20Program%20to&text=This%20program%20is%20to%20illustrate,is%20replaced%20by%20'*'.
-    for (i = 0; i < tempValue; i++)
+    for (i = 0; i < USERNAME_AND_PASSWORD - 1; i++)
     {
         ch = _getch();
 

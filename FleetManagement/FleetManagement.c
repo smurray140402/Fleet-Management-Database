@@ -324,8 +324,19 @@ void addNewMachine(Node** head) {
     scanf("%s", newMachine->ownerName);
 
     // Owner Email
-    printf("Please enter machinery owner email: ");
-    scanf("%s", newMachine->ownerEmail);
+    int validEmail = 0;
+    do {
+        printf("Please enter machinery owner email: ");
+        scanf("%s", newMachine->ownerEmail);
+
+        // Check for '@' and '.'
+        if (strchr(newMachine->ownerEmail, '@') && strchr(newMachine->ownerEmail, '.com')) {
+            validEmail = 1;
+        }
+        else {
+            printf("\nInvalid email! Must contain '@' and '.'\n");
+        }
+    } while (!validEmail);
 
     // Owner Number
     printf("Please enter machinery owner number: ");
